@@ -30,11 +30,10 @@ module "aws_autoscaling_group" {
   create_lt   = true
 
   image_id      = "ami-04505e74c0741db8d"
-  instance_type = "t3a.medium"
+  instance_type = "m5.large"
   key_name      = "project-testing"
   #user_data_base64 = base64encode(local.user_data)
   user_data_base64 = base64encode(templatefile("${path.module}/userdata.sh", {
-    # rds_endpt = var.rds_point, efs_dns_name = var.dns_name
   }))
 
   target_group_arns = var.target_gp
