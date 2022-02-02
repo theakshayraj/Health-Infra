@@ -15,6 +15,6 @@ output "security_group_id_asg" {
   value = module.security_group_asg.security_group_id
 }
 
-output "security_group_id_rds" {
-  value = module.security_group_rds.security_group_id
-}
+# output "security_group_id_rds" {
+#   value = module.security_group_rds.security_group_id
+# }

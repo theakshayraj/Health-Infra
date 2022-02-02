@@ -25,8 +25,8 @@ module "efs" {
   vpc_efs       = module.network.vpc_id_all
 }
 
-module "route53" {
-  source      = "./modules/route53/"
-  dns_alb     = module.alb.alb_dns
-  vpc_route53 = module.network.vpc_id_all
-}
+# module "route53" {
+#   source      = "./modules/route53/"
+#   dns_alb     = module.alb.alb_dns
+#   vpc_route53 = module.network.vpc_id_all
+# }

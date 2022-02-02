@@ -71,40 +71,40 @@ module "security_group_asg" {
   ]
 }
 
-module "security_group_rds" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-security-group.git?ref=v4.0.0"
+# module "security_group_rds" {
+#   source = "git@github.com:terraform-aws-modules/terraform-aws-security-group.git?ref=v4.0.0"
 
-  name   = "security-group_rds"
-  vpc_id = module.vpc.vpc_id
-  egress_with_cidr_blocks = [
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "all"
-      description = "Open internet"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]
+#   name   = "security-group_rds"
+#   vpc_id = module.vpc.vpc_id
+#   egress_with_cidr_blocks = [
+#     {
+#       from_port   = 0
+#       to_port     = 65535
+#       protocol    = "all"
+#       description = "Open internet"
+#       cidr_blocks = "0.0.0.0/0"
+#     }
+#   ]
 
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "tcp"
-      description = "All TCP"
-      cidr_blocks = "10.99.0.0/18"
-    }
-  ]
+#   ingress_with_cidr_blocks = [
+#     {
+#       from_port   = 0
+#       to_port     = 65535
+#       protocol    = "tcp"
+#       description = "All TCP"
+#       cidr_blocks = "10.99.0.0/18"
+#     }
+#   ]
 
-  computed_ingress_with_source_security_group_id = [
-    {
-      from_port                = 3306
-      to_port                  = 3306
-      protocol                 = "tcp"
-      description              = "Added ASG SG"
-      source_security_group_id = module.security_group_asg.security_group_id
-    }
-  ]
+#   computed_ingress_with_source_security_group_id = [
+#     {
+#       from_port                = 3306
+#       to_port                  = 3306
+#       protocol                 = "tcp"
+#       description              = "Added ASG SG"
+#       source_security_group_id = module.security_group_asg.security_group_id
+#     }
+#   ]
 
-  number_of_computed_ingress_with_source_security_group_id = 1
-}
+#   number_of_computed_ingress_with_source_security_group_id = 1
+# }

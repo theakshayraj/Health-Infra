@@ -2,8 +2,27 @@ locals {
   name = "project-asg"
 }
 
+resource "tls_private_key" "dev_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "generated_key" {
+  key_name   = "${terraform.workspace}-instance-key"
+  public_key = tls_private_key.dev_key.public_key_openssh
+
+  provisioner "local-exec" {    
+    command = "echo '${tls_private_key.dev_key.private_key_pem}' > ./${terraform.workspace}-instance-key.pem"
+  }
+
+  provisioner "local-exec" {
+    command = "chmod 400 ./${terraform.workspace}-instance-key.pem"
+  }
+}
 module "aws_autoscaling_group" {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-autoscaling.git?ref=v4.1.0"
+  
+  source  = "terraform-aws-modules/autoscaling/aws"
+  version = "4.1.0"
 
   # Autoscaling group
   name = "project-testing"
@@ -31,7 +50,7 @@ module "aws_autoscaling_group" {
 
   image_id      = "ami-04505e74c0741db8d"
   instance_type = "m5.large"
-  key_name      = "project-testing"
+  key_name      = "${terraform.workspace}-instance-key"
   #user_data_base64 = base64encode(local.user_data)
   user_data_base64 = base64encode(templatefile("${path.module}/userdata.sh", {
   }))
@@ -48,12 +67,7 @@ module "aws_autoscaling_group" {
     },
     {
       key                 = "Name"
-      value               = "terraform_asg_cluster"
-      propagate_at_launch = "true"
-    },
-    {
-      key                 = "BU"
-      value               = "project-testing"
+      value               = "project-test"
       propagate_at_launch = "true"
     },
     {
