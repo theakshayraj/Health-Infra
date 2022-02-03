@@ -9,7 +9,3 @@ variable "subnet_asg" {
 variable "target_gp" {
 
 }
-
-variable "dns_name" {
-
-}

@@ -4,7 +4,7 @@ module "asg" {
   subnet_asg    = module.network.public_sn_asg
   sec_group_asg = module.network.security_group_id_asg
   target_gp     = module.alb.tg
-  dns_name      = module.efs.dns_name_efs
+  # dns_name      = module.efs.dns_name_efs
 }
 
 module "network" {
@@ -16,13 +16,6 @@ module "alb" {
   vpc_alb       = module.network.vpc_id_all
   sec_group_alb = module.network.security_group_id_asg
   subnet_alb    = module.network.public_sn_asg
-}
-
-module "efs" {
-  source        = "./modules/efs/"
-  subnet_efs    = module.network.private_sn_asg
-  sec_group_efs = module.network.security_group_id_asg
-  vpc_efs       = module.network.vpc_id_all
 }
 
 # module "route53" {
