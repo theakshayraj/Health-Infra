@@ -22,6 +22,21 @@ sudo mkdir /usr/share/postgres && sudo chmod 777 /usr/share/postgres
 sudo mkdir /usr/share/mongodb && sudo chmod 777 /usr/share/mongodb
 
 # Get the docker compose file from GitHub
-git clone https://github.com/anubhavuniyal/DemoInfra && cd DemoInfra
+cd /home/ubuntu
+git clone https://github.com/anubhavuniyal/DemoInfra && cd /home/ubuntu/DemoInfra
 sudo docker-compose up &
-sleep 5
+sleep 100
+
+# Copy mock data to their respective docker container mount points, so that the container can access them to execute
+sudo cp /home/ubuntu/DemoInfra/mockdata.sql /usr/share/mysql
+sudo cp /home/ubuntu/DemoInfra/AddDummyData.sh /usr/share/mysql
+sudo cp /home/ubuntu/DemoInfra/mockdata.sql /usr/share/postgres
+sudo cp /home/ubuntu/DemoInfra/AddDummyData.sh /usr/share/postgres
+sudo cp /home/ubuntu/DemoInfra/mockdata.json /usr/share/mongodb
+sudo cp /home/ubuntu/DemoInfra/AddDummyData.sh /usr/share/mongodb
+
+
+# Docker exec to insert mock data into databases
+sudo docker exec mysql_db /bin/bash /var/lib/mysql/AddDummyData.sh --mysql
+sudo docker exec postgresql_db /bin/bash /var/lib/postgresql/data/AddDummyData.sh --postgres
+sudo docker exec mongo_db /bin/bash /data/db/AddDummyData.sh --mongodb
