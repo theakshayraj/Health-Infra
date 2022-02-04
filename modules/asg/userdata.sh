@@ -16,7 +16,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose -y
 sudo systemctl enable docker
 sudo systemctl start docker
 
-# Create mount points for docker volumes
+# Create mount points for docker volumes, so that data can persist
 sudo mkdir /usr/share/mysql && sudo chmod 777 /usr/share/mysql
 sudo mkdir /usr/share/postgres && sudo chmod 777 /usr/share/postgres
 sudo mkdir /usr/share/mongodb && sudo chmod 777 /usr/share/mongodb
@@ -24,7 +24,7 @@ sudo mkdir /usr/share/mongodb && sudo chmod 777 /usr/share/mongodb
 # Get the docker compose file from GitHub
 cd /home/ubuntu
 git clone https://github.com/anubhavuniyal/DemoInfra && cd /home/ubuntu/DemoInfra
-sudo docker-compose up &
+sudo docker-compose up -d
 sleep 100
 
 # Copy mock data to their respective docker container mount points, so that the container can access them to execute

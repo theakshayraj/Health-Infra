@@ -7,7 +7,7 @@ output "public_sn_asg" {
 }
 
 output "private_sn_asg" {
-  value = module.vpc.public_subnets
+  value = module.vpc.private_subnets
   #value = flatten(module.vpc.private_subnets)[2]
 }
 

@@ -63,6 +63,14 @@ module "nlb" {
   # }
 
   target_groups = [
+
+    {
+      name_prefix      = "ptnr"
+      backend_protocol = "TCP"
+      backend_port     = 9000
+      
+      target_type      = "instance"
+    },
     {
       name_prefix      = "mysql"
       backend_protocol = "TCP"
@@ -85,38 +93,33 @@ module "nlb" {
     }
   ]
 
-  # https_listeners = [
-  #   {
-  #     port               = 443
-  #     protocol           = "TLS"
-  #     # certificate_arn    = "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012"
-  #     target_group_index = 0
-  #   }
-  # ]
-
   http_tcp_listeners = [
     # {
     #   port               = 80
     #   protocol           = "TCP"
     #   target_group_index = 0
     # }
-
     {
-      port               = 3306
+      port               = 9000
       protocol           = "TCP"
       target_group_index = 0
     },
-
     {
-      port               = 27017
+      port               = 3306
       protocol           = "TCP"
       target_group_index = 1
     },
 
     {
-      port               = 5432
+      port               = 27017
       protocol           = "TCP"
       target_group_index = 2
+    },
+
+    {
+      port               = 5432
+      protocol           = "TCP"
+      target_group_index = 3
     }
   ]
 
@@ -132,7 +135,3 @@ module "nlb" {
 output "tg" {
   value = module.nlb.target_group_arns
 }
-
-# output "nlb_dns" {
-#   value = module.nlb.lb_dns_name
-# }

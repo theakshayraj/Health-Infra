@@ -29,7 +29,7 @@ module "aws_autoscaling_group" {
 
   min_size                  = 1
   max_size                  = 5
-  desired_capacity          = 2
+  desired_capacity          = 1
   wait_for_capacity_timeout = "5m"
   health_check_type         = "EC2"
   vpc_zone_identifier       = var.subnet_asg
