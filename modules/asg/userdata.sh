@@ -24,9 +24,8 @@ sudo mkdir /usr/share/mongodb && sudo chmod 777 /usr/share/mongodb
 # Get the docker compose file from GitHub
 cd /home/ubuntu
 git clone https://github.com/anubhavuniyal/DemoInfra && cd /home/ubuntu/DemoInfra
-sudo docker-compose up -d
-sleep 100
-
+chmod +x setup.sh
+./setup.sh
 # Copy mock data to their respective docker container mount points, so that the container can access them to execute
 sudo cp /home/ubuntu/DemoInfra/mockdata.sql /usr/share/mysql
 sudo cp /home/ubuntu/DemoInfra/AddDummyData.sh /usr/share/mysql
