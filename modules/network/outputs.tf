@@ -14,4 +14,3 @@ output "private_sn_asg" {
 output "security_group_id_asg" {
   value = module.security_group_asg.security_group_id
 }
-

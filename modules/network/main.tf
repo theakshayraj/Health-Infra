@@ -3,28 +3,15 @@ module "vpc" {
 
   name                 = "project-vpc"
   cidr                 = "10.99.0.0/18"
-  azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  public_subnets  = ["10.99.0.0/24", "10.99.1.0/24", "10.99.2.0/24"]
-  private_subnets = ["10.99.3.0/24", "10.99.4.0/24", "10.99.5.0/24"]
+  azs             = ["ap-south-1a"]
+  public_subnets  = ["10.99.0.0/24"]
+  private_subnets = ["10.99.3.0/24"]
   enable_dns_hostnames = true
+  enable_nat_gateway = true
+  single_nat_gateway = true
+
 }
 
-module "nat" {
-  source = "int128/nat-instance/aws"
-
-  name                        = "project-nat"
-  vpc_id                      = module.vpc.vpc_id
-  public_subnet               = module.vpc.public_subnets[0]
-  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
-  private_route_table_ids     = module.vpc.private_route_table_ids
-}
-
-resource "aws_eip" "nat" {
-  network_interface = module.nat.eni_id
-  tags = {
-    "Name" = "nat-instance-main"
-  }
-}
 module "security_group_asg" {
   source = "git@github.com:terraform-aws-modules/terraform-aws-security-group.git?ref=v4.0.0"
 
@@ -41,14 +28,6 @@ module "security_group_asg" {
   ]
 
   ingress_with_cidr_blocks = [
-
-    {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      description = "HTTP"
-      cidr_blocks = "0.0.0.0/0"
-    },
     {
       from_port   = 22
       to_port     = 22
@@ -57,24 +36,31 @@ module "security_group_asg" {
       cidr_blocks = "0.0.0.0/0"
     },
     {
-      from_port   = 2049
-      to_port     = 2049
+      from_port   = 5050
+      to_port     = 5050
       protocol    = "tcp"
-      description = "NFS"
+      description = "Pntr"
       cidr_blocks = "0.0.0.0/0"
     },
     {
-      from_port   = 0
-      to_port     = 65535
+      from_port   = 1336
+      to_port     = 1336
       protocol    = "tcp"
-      description = "ALB Port Open in ASG"
+      description = "mysql"
       cidr_blocks = "0.0.0.0/0"
     },
     {
-      from_port   = 8080
-      to_port     = 8080
+      from_port   = 1446
+      to_port     = 1446
       protocol    = "tcp"
-      description = "HTTP"
+      description = "postg"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 1556
+      to_port     = 1556
+      protocol    = "tcp"
+      description = "mongo"
       cidr_blocks = "0.0.0.0/0"
     }
   ]

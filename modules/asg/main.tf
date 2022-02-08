@@ -48,7 +48,7 @@ module "aws_autoscaling_group" {
   use_lt      = true
   create_lt   = true
 
-  image_id      = "ami-04505e74c0741db8d"
+  image_id      = "ami-08ee6644906ff4d6c"
   instance_type = "m5.large"
   key_name      = "${terraform.workspace}-instance-key"
   #user_data_base64 = base64encode(local.user_data)
