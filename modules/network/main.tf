@@ -3,7 +3,7 @@ module "vpc" {
 
   name                 = "project-vpc"
   cidr                 = "10.99.0.0/18"
-  azs             = ["ap-south-1a"]
+  azs             = ["ap-south-1b"]
   public_subnets  = ["10.99.0.0/24"]
   private_subnets = ["10.99.3.0/24"]
   enable_dns_hostnames = true

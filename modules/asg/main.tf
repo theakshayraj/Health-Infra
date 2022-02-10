@@ -30,7 +30,7 @@ module "aws_autoscaling_group" {
   min_size                  = 1
   max_size                  = 5
   desired_capacity          = 1
-  wait_for_capacity_timeout = "5m"
+  wait_for_capacity_timeout = "8m"
   health_check_type         = "EC2"
   vpc_zone_identifier       = var.subnet_asg
   security_groups           = [var.sec_group_asg]
@@ -48,7 +48,7 @@ module "aws_autoscaling_group" {
   use_lt      = true
   create_lt   = true
 
-  image_id      = "ami-08ee6644906ff4d6c"
+  image_id      = "ami-0851b76e8b1bce90b"
   instance_type = "m5.large"
   key_name      = "${terraform.workspace}-instance-key"
   #user_data_base64 = base64encode(local.user_data)
