@@ -8,15 +8,15 @@ resource "tls_private_key" "dev_key" {
 }
 
 resource "aws_key_pair" "generated_key" {
-  key_name   = "${terraform.workspace}-instance-key"
+  key_name   = "Health-instance-key"
   public_key = tls_private_key.dev_key.public_key_openssh
 
   provisioner "local-exec" {    
-    command = "echo '${tls_private_key.dev_key.private_key_pem}' > ./${terraform.workspace}-instance-key.pem"
+    command = "echo '${tls_private_key.dev_key.private_key_pem}' > ./Health-instance-key.pem"
   }
 
   provisioner "local-exec" {
-    command = "chmod 400 ./${terraform.workspace}-instance-key.pem"
+    command = "chmod 400 ./Health-instance-key.pem"
   }
 }
 module "aws_autoscaling_group" {
@@ -50,7 +50,7 @@ module "aws_autoscaling_group" {
 
   image_id      = "ami-0851b76e8b1bce90b"
   instance_type = "m5.large"
-  key_name      = "${terraform.workspace}-instance-key"
+  key_name      = "Health-instance-key"
   #user_data_base64 = base64encode(local.user_data)
   user_data_base64 = base64encode(templatefile("${path.module}/userdata.sh", {
   }))
@@ -60,25 +60,11 @@ module "aws_autoscaling_group" {
   health_check_grace_period = 300
 
   tags = [
-    {
-      key                 = "Project"
-      value               = "terraform_interview"
-      propagate_at_launch = "true"
-    },
-    {
-      key                 = "Name"
-      value               = "project-test"
-      propagate_at_launch = "true"
-    },
-    {
-      key                 = "Owner"
-      value               = ""
-      propagate_at_launch = "true"
-    },
-    {
-      key                 = "Purpose"
-      value               = "health project"
-      propagate_at_launch = "true"
-    }
+   {
+    app_name        = "Interview-Health"
+    lob             = "health"
+    team            = "devops"
+    owner           = "devops@acko.tech"
+  }
   ]
 }
