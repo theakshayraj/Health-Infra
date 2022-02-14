@@ -1,15 +1,18 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
 
-  name                 = "project-vpc"
+  # name                 = "project-vpc"
   cidr                 = "10.99.0.0/18"
-  azs             = ["ap-south-1b"]
+  azs             = ["ap-south-1a"]
   public_subnets  = ["10.99.0.0/24"]
   private_subnets = ["10.99.3.0/24"]
   enable_dns_hostnames = true
   enable_nat_gateway = true
   single_nat_gateway = true
 
+  tags = {
+    Name = "Interview"
+  }
 }
 
 module "security_group_asg" {

@@ -3,7 +3,14 @@ module "nlb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "~> 6.0"
 
-  name = "project-health-nlb"
+  tags = [
+   {
+    app_name        = "Interview-Health"
+    lob             = "health"
+    team            = "devops"
+    owner           = "devops@acko.tech"
+  }
+  ]
 
   load_balancer_type = "network"
 
@@ -13,7 +20,7 @@ module "nlb" {
   
 
   target_groups = [
-{
+  {
       name_prefix      = "ssh"
       backend_protocol = "TCP"
       backend_port     = 22
@@ -56,7 +63,7 @@ module "nlb" {
       target_group_index = 0
     },
     {
-      port               = 50500
+      port               = 443
       protocol           = "TCP"
       target_group_index = 1
     },
@@ -78,14 +85,6 @@ module "nlb" {
       target_group_index = 4
     }
   ]
-
-    tags = {
-    Project = "terraform_interview"
-    Name    = "terraform_asg_cluster"
-    BU      = "project-testing"
-    Owner   = ""
-    Purpose = "health project"
-  }
 }
 
 output "tg" {
